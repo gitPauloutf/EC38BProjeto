@@ -1,0 +1,14 @@
+var express = require('express');
+const Joi = require("joi");
+var router = express.Router();
+var content = require('../public/javascripts/handler')
+
+router.get('/', function(req, res, next){
+    res.render('index',{...content.display('home')});
+    console.log("Running");
+})
+router.post('/', function(req, res, next){
+    res.render('index',{...content.display(req.body.page)});
+})
+
+module.exports = router;
