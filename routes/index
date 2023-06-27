@@ -2,6 +2,7 @@ var express = require('express');
 const Joi = require("joi");
 var router = express.Router();
 var content = require('../public/javascripts/handler')
+var usermodel = require('../model/User')
 
 router.get('/', function(req, res, next){
     res.render('index',{...content.display('home')});
@@ -10,5 +11,23 @@ router.get('/', function(req, res, next){
 router.post('/', function(req, res, next){
     res.render('index',{...content.display(req.body.page)});
 })
+
+router.post('/reg', function(req,res,next){
+    let tmpuser = req.body
+    if (usermodel.reg(tmpuser.usr,tmpuser.name,tmpuser.pw)) console.log ("Done")
+})
+
+router.post('/log', async function(req,res,next){
+    let tmpuser = await usermodel.log(req.body.usr,req.body.pw)
+    console.log(tmpuser)
+    console.log(tmpuser.name+" "+tmpuser.isAdmin)
+    if (!tmpuser) console.log ("Failed")
+    else {
+        res.render('logged',{ifAdmin: tmpuser.isAdmin, name: tmpuser.name})
+        console.log ("Logged")
+    }
+})
+
+router.post('/logged')
 
 module.exports = router;
