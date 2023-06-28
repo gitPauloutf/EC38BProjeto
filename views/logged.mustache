@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles/styles.css" type="text/css" rel="stylesheet">
+    <title>Projeto Web</title>
+</head>
+<body>
+    <header>
+        <h1>Projeto Web</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="javascript:refresh('logoff')">Logoff</a></li>
+        </ul>
+        
+    </nav>
+    <main>
+        <h2>Area de {{ifAdmin}}</h2>
+        <div>Bem vindo {{name}}</div>
+    </main>
+    <footer>
+        <p>Projeto de Programação Web [EC38B]</p>
+    </footer>
+    <script>
+    function refresh(val){
+        console.log("start");
+        tmp = document.createElement("form")
+        tmpin = document.createElement("input")
+        tmpin.name = "page";
+        tmp.action = "/logged"
+        tmpin.value = val;
+        tmp.method = "post";
+        tmp.appendChild(tmpin)
+        document.body.appendChild(tmp);
+        tmp.submit();
+        console.log("sent");
+        }
+    </script>
+</body>
+</html>
