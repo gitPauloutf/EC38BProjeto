@@ -11,20 +11,20 @@ module.exports = {
             case 'reg':
                 header = "Register";
                 content = "<form action=\"\/reg\" method=\"POST\">"
-                content +="<label for=\"usr\">Username: </label>"
+                content +="<label htmlFor=\"usr\">Username: </label>"
                 content +="<input type=\"text\" id=\"usr\" name=\"usr\" required><br><br>"
-                content +="<label for=\"pw\">Password: </label>"
+                content +="<label htmlFor=\"pw\">Password: </label>"
                 content +="<input type=\"password\" id=\"pw\" name=\"pw\" required><br><br>"
-                content +="<label for=\"name\">Name: </label>"
+                content +="<label htmlFor=\"name\">Name: </label>"
                 content +="<input type=\"text\" id=\"name\" name=\"name\" required><br><br>"
                 content +="<input type=\"submit\" value=\"Register\"></input></form>"
                 break;
             case 'log':
                 header = "<h2>Login</h2>";
                 content = "<form action=\"\/log\" method=\"POST\">"
-                content +="<label for=\"usr\">Username: </label>"
+                content +="<label htmlFor=\"usr\">Username: </label>"
                 content +="<input type=\"text\" id=\"usr\" name=\"usr\" required><br><br>"
-                content +="<label for=\"pw\">Password:</label>"
+                content +="<label htmlFor=\"pw\">Password:</label>"
                 content +="<input type=\"password\" id=\"pw\" name=\"pw\" required><br><br>"
                 content +="<input type=\"submit\" value=\"Login\"></input></form>"
                 break;

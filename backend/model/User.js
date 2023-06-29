@@ -44,11 +44,9 @@ module.exports = {
     },
     reg: async function (usr, name, pw, isAdmin) {
         obj = await getByUsr(usr)
-        console.log('a')
         let err = null
         if (!obj) {
             obj = await getByName(name)
-            console.log('b '+ obj)
             if (!obj) {
                 const user = new UserModel({
                     usr: usr,
@@ -56,7 +54,6 @@ module.exports = {
                     pw: pw,
                     isAdmin: isAdmin
                 })
-                console.log('c')
                 if (usr == 'admin') user.isAdmin = 'Admin'
                 await user.save()
                 return [1,0]

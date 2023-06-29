@@ -17,12 +17,10 @@ module.exports = {
     generateAccessToken,
 
     controlaAcesso: function (req, res, next) {
-        let bearer = req.headers['authorization'] || ''
-        let aux = bearer.split(' ')
-        let token = ''
-        if (aux[0] == 'Bearer') {
-            token = aux[1]
-        }
+        let token = req.cookies.access_token
+
+        if(!token) return res.status(401).json({ status: false, mensagem: "No tokens?" })
+
 
         jwt.verify(token, process.env.TOKEN_SECRET, (err, payload) => {
             if (err) {

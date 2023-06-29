@@ -1,35 +1,49 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import {login} from "../../service/Api"
-const LoginModal = () => {
+import { useNavigate } from "react-router-dom";
+import Context from "../../context";
 
+const LoginModal = () => {
     const [usr, setUsr] = useState("");
     const [pw, setPw] = useState("")
+    const navigate = useNavigate();
+    const [user, setUser] = useContext(Context)
 
-    const Login = (e) => {
+    const Login = async (e) => {
         e.preventDefault();
-        console.log(usr)
-        login(usr,pw)
+        const res = await login(usr, pw);
+        console.log(res)
+        if (res) {
+            setUser({
+                usr: res.usr,
+                name: res.name,
+                isAdmin: res.isAdmin,
+                isLogged: true,
+            })
+            navigate("/dashboard")
+        }
+        else alert("Falha ao realizar o login")
+        
     }
-
     return (
-        <div class="modal" id="loginModal" aria-labelledby="loginModal" aria-hidden="true" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Login</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div className="modal" id="loginModal" aria-labelledby="loginModal" aria-hidden="true" tabIndex="-1">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title">Login</h5>
+                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div className="modal-body">
                         <form>
-                            <div class="mb-3">
-                                <label for="usr" class="form-label">Usuario</label>
-                                <input type="text" class="form-control" id="usr" value={usr} onChange={(e) => setUsr(e.target.value)} />
+                            <div className="mb-3">
+                                <label htmlFor="usr" className="form-label">Usuario</label>
+                                <input type="text" className="form-control" id="usr" value={usr} onChange={(e) => setUsr(e.target.value)} />
                             </div>
-                            <div class="mb-3">
-                                <label for="pw" class="form-label">Senha</label>
-                                <input type="password" class="form-control" id="pw" value={pw} onChange={(e) => setPw(e.target.value)} />
+                            <div className="mb-3">
+                                <label htmlFor="pw" className="form-label">Senha</label>
+                                <input type="password" className="form-control" id="pw" value={pw} onChange={(e) => setPw(e.target.value)} />
                             </div>
-                            <button type="submit" class="btn btn-primary" onClick={(e) => Login(e)}>Enviar</button>
+                            <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" onClick={(e) => Login(e)}>Enviar</button>
                         </form>
                     </div>
                 </div>
