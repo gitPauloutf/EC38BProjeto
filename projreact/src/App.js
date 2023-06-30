@@ -9,7 +9,7 @@ function App() {
   const [user, setUser] = useState({
     usr: "",
     name: "",
-    isAdmin: false,
+    isAdmin: "",
     isLogged: false
   })
   return (

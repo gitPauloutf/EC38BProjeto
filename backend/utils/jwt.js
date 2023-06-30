@@ -18,7 +18,6 @@ module.exports = {
 
     controlaAcesso: function (req, res, next) {
         let token = req.cookies.access_token
-
         if(!token) return res.status(401).json({ status: false, mensagem: "No tokens?" })
 
 
@@ -32,5 +31,11 @@ module.exports = {
             req.isAdmin = payload.isAdmin
             next()
         })
+    },
+    deleteToken: function (req,res,next){
+        console.log('im tryin')
+        res.clearCookie('access_token')
+        res.json({status:true})
+        next()
     }
 }

@@ -3,7 +3,7 @@ import React, { createContext } from "react"
 const Context = createContext([{
     name: "",
     usr: "",
-    isAdmin: false,
+    isAdmin: "",
     isLogged: false
 }, () => {}]);
 

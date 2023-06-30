@@ -17,14 +17,21 @@ async function getByUsr(nome) {
 }
 
 async function list() {
-    return await UserModel.find().lean()
+    tmp = await UserModel.find().lean()
+    tmp = tmp.map(item => {delete item.pw
+            return item})
+    return tmp
 }
 
 async function del(usr) {
-    return await UserModel.deleteOne({ usr: usr })
+    tmp = await UserModel.deleteOne({ usr: usr })
+    if (tmp.ok>0) return [1,0]
+    else return [0,'Falha na operacao']
 }
 async function alter(usr, newusr) {
-    return await UserModel.updateOne({ usr: usr }, { $set: newusr })
+    tmp = await UserModel.updateOne({ usr: usr }, {$set:{ usr: newusr.usr, name: newusr.name, isAdmin: newusr.isAdmin }})
+    if (tmp.modifiedCount>0) return [1,0] 
+    else return [0,'Falha na operacao']
 }
 module.exports = {
     getByName, getByUsr, list, del, alter,

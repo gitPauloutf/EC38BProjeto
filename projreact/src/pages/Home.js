@@ -5,15 +5,32 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer"
 
 const Home = () => {
-
     const [user, setUser] = useContext(Context);
+
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (user.isLogged) {
+    const fetchdata = async () => {
+        const res = await fetch('http://localhost:3001/',{credentials: 'include'})
+        var resj = await res.json()
+        if (resj.usr){
+            setUser({
+                usr: resj.usr,
+                name: resj.name,
+                isAdmin: resj.isAdmin,
+                isLogged: true,
+            })
             navigate("/dashboard")
         }
-    }, [])
+    }
+    useEffect(() => {
+        fetchdata().catch(console.error);
+      }, [])
+    
+    /*useEffect(() => {
+        if (user.isLogged==true) {
+            navigate("/dashboard")
+        }
+    }, [])*/
 
     return (
         <div className="d-flex flex-column min-vh-100">
