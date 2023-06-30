@@ -1,14 +1,28 @@
-import { useState } from "react"
+import { useContext, useState, useEffect } from "react"
+import Context from "../../context"
 import {alter} from "../../service/Api"
 import { useNavigate } from "react-router-dom";
 const EditModal = ({usrold}) => {
-    const [name, setName] = useState(usrold.name);
-    const [usr, setUsr] = useState(usrold.usr);
-    const [adm, setAdm] = useState(usrold.isAdmin)
+    const [user, setUser] = useContext(Context);
+    const [name, setName] = useState('');
+    const [usr, setUsr] = useState('');
+    const [adm, setAdm] = useState('');
     const navigate = useNavigate()
+    useEffect(() => {
+        if (user.isAdmin=='Usuario'){
+            setAdm('Usuario')
+        }
+    }, [user])
+
+    useEffect(() => {
+        setName(usrold.name);
+        setUsr(usrold.usr);
+        setAdm(usrold.isAdmin);
+    }, [usrold])
 
     const Alter = async (e) => {
         e.preventDefault();
+
         const res = await alter(usrold.usr, {usr: usr, name: name, isAdmin: adm})
         if(!res.status) alert(res.mensagem)
         else alert('Usuario editado')
@@ -27,23 +41,27 @@ const EditModal = ({usrold}) => {
                         <form>
                             <div className="mb-3">
                                 <label htmlFor="name" className="form-label">Nome</label>
-                                <input type="text" className="form-control" id="name" placeholder={usrold.name} value={name} onChange={(e) => setName(e.target.value)} />
+                                <input type="text" className="form-control" id="name" placeholder={name} value={name} onChange={(e) => setName(e.target.value)} />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="usr" className="form-label">Usuario</label>
-                                <input type="text" className="form-control" id="usr"  placeholder={usrold.usr} value={usr} onChange={(e) => setUsr(e.target.value)} />
+                                <input type="text" className="form-control" id="usr"  placeholder={usr} value={usr} onChange={(e) => setUsr(e.target.value)} />
                             </div>
+                            
+                            {(user.isAdmin=='Admin') &&
+                            
                             <div className="mb-3">
                                 <div className="form-check">
-                                    <input className="form-check-input" type="radio" name="isAdmin" id="radadm" value={'Admin'} onChange={(e) => setAdm(e.target.value)}/>
+                                    <input className="form-check-input" type="radio" name="isAdmin" id="radadm" checked={adm === 'Admin'} value={'Admin'} onChange={(e) => setAdm(e.target.value)}/>
                                     <label className="form-check-label"htmlFor="radadm">Admin</label>
                                 </div>
                                 <div className="form-check">
-                                    <input className="form-check-input" type="radio" name="isAdmin" id="radusr" value={'Usuario'} onChange={(e) => setAdm(e.target.value)}/>
+                                    <input className="form-check-input" type="radio" name="isAdmin" id="radusr" checked={adm === 'Usuario'} value={'Usuario'} onChange={(e) => setAdm(e.target.value)}/>
                                     <label className="form-check-label"htmlFor="radusr">Usuario</label>
                                 </div>
                                 
-                            </div>
+                            </div>}
+                            
                             <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" onClick={(e) => Alter(e)}>Enviar</button>
                         </form>
                     </div>

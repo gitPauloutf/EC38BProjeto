@@ -24,16 +24,16 @@ const Tables = () => {
     var [tlist, setTlist] = useState([])
     var itermax = 15;
 
-    const createTable = (user,index) =>{
+    const createTable = (usertb,index) =>{
       if (index < itermax) return (
         <>
         <tr>
-        <td>{user.usr}</td>
-        <td>{user.name}</td>
-        <td>{user.isAdmin}</td>
+        <td>{usertb.usr}</td>
+        <td>{usertb.name}</td>
+        <td>{usertb.isAdmin}</td>
         <td className='text-center'>
-        <button className="btn btn-danger me-2" type="button"  onClick={() => delUser(user)}>Deletar</button>
-        <button className="btn btn-warning" type="button" data-bs-toggle="modal" onClick={() => setUsrOld(user)}data-bs-target="#editModal">Alterar</button>
+        <button className="btn btn-danger me-2" type="button"  onClick={() => delUser(usertb)}>Deletar</button>
+        <button className="btn btn-warning" type="button" data-bs-toggle="modal" onClick={() => setUsrOld(usertb)} data-bs-target="#editModal">Alterar</button>
         </td>
         </tr>
 
@@ -57,7 +57,7 @@ const Tables = () => {
           {tlist.map((iter,index) => {return createTable(iter,index)})}
         </tbody>
         </table>
-        <EditModal usrold={usrold} />
+        <EditModal usrold={usrold} modal={'admin'} />
     </>
     )
 }

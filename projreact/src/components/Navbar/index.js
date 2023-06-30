@@ -3,6 +3,7 @@ import RegisterModal from "../RegisterModal"
 import { useContext, useEffect } from "react"
 import Context from "../../context"
 import { useNavigate } from "react-router-dom";
+import EditModal from "../EditModal"
 
 const Navbar = () => {
     const [user, setUser] = useContext(Context);
@@ -27,6 +28,9 @@ const Navbar = () => {
                     {!user.isLogged &&
                         <button className="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#registerModal" type="button">Register</button>}
                     {user.isLogged && <p className="text-md text-primary me-3 mb-0">Olá {user.name}!</p>}
+                    {(user.isLogged && (user.isAdmin=='Usuario')) &&
+                        <button className="btn btn-sm btn-success me-2" type="button" data-bs-toggle="modal" data-bs-target="#editModal">Alterar</button>
+                        }
                     {(user.isLogged && (user.isAdmin=='Admin')) &&
                         <button className="btn btn-sm btn-success me-2" type="button" data-bs-toggle="modal" data-bs-target="#registerModal">Criar usuario</button>}
                     {user.isLogged &&
@@ -36,6 +40,10 @@ const Navbar = () => {
             </nav>
             <LoginModal />
             <RegisterModal />
+            {(user.isLogged && (user.isAdmin=='Usuario')) &&
+                        <EditModal usrold= {user} modal={'user'} />
+                }
+            
         </>
     )
 }

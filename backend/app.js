@@ -9,6 +9,7 @@ dotenv.config()
 var app = express();
 var indexRouter = require('./routes/index');
 var logRouter = require('./routes/logreg');
+var crud = require('./routes/crud')
 
 app.use(cookieParser())
 app.use(require('./db/mongo'))
@@ -22,6 +23,7 @@ app.use(express.json());
 
 app.use('/', indexRouter);
 app.use('/', logRouter);
+app.use('/',crud);
 
 // error handler
 app.use(function (err, req, res, next) {

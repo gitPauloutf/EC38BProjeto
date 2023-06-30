@@ -7,14 +7,13 @@ router.post('/reg', async function (req, res, next) {
     console.log(req.body)
     let { usr, pw, name, isAdmin } = req.body
     let [status, err] = await usermodel.reg(usr, name, pw, isAdmin)
-    console.log(status, err)
     if (status) {
         console.log("Done")
         res.status(200)
         res.json({ status: true })
         return
     } else {
-        console.log(err)
+        console.err(err)
         res.status(500).json({ status: false, mensagem: err })
         res.send()
         return
@@ -22,22 +21,21 @@ router.post('/reg', async function (req, res, next) {
 })
 
 router.post('/log',  async function (req, res, next) {
-    let jwtToken
+    //let jwtToken
     const { usr, pw } = req.body
     let [tmpuser, err] = await usermodel.log(usr, pw)
     if (!tmpuser) {
         res.status(403).json({ status: false, mensagem: err })
     } else {
-        jwtToken = tokens.generateAccessToken(tmpuser.name, usr, pw, tmpuser.isAdmin)
-        console.log(jwtToken)
+        const jwtToken = tokens.generateAccessToken(tmpuser.name, usr, pw, tmpuser.isAdmin)
         res.set("x-access-token", jwtToken);
-        res.cookie("access_token", jwtToken,{maxAge: 600000}).status(200).json({ usr: usr, name: tmpuser.name , isAdmin: tmpuser.isAdmin });
+        res.cookie("access_token", jwtToken,{maxAge: 600000}).status(200).json({ usr: usr, name: tmpuser.name , isAdmin: tmpuser.isAdmin, status: true });
+        console.log("Logged")
     }
-    console.log("Logged")
     
 })
 
-router.post('/logged', async function (req, res, next) {
+router.post('/logged',tokens.controlaAcesso, async function (req, res, next) {
     console.log(req.body)
     let status, err
     switch (req.body.act) {
@@ -61,8 +59,6 @@ router.post('/logged', async function (req, res, next) {
         return
     }
     users = await usermodel.list()
-    console.log(users)
-
     res.status(200).json({users, status: status, err: err})
 
 })

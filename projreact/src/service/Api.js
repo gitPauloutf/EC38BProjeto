@@ -20,7 +20,7 @@ export async function login(usr, pw) {
 
 }
 
-export async function reg(usr, pw, name,isAdmin) {
+export async function reg(usr, pw, name, isAdmin) {
   return await fetch('http://localhost:3001/reg', {
     method: 'POST',
     headers: {
@@ -55,7 +55,7 @@ export async function list(){
     const body = await res.json()
     return body
   } catch (error){
-    console.log(error)
+    console.error(error)
     throw error;
   }
 }
@@ -78,7 +78,7 @@ export async function alter(usr,newusr){
     const body = await res.json()
     return body
   } catch (error){
-    console.log(error)
+    console.error(error)
     throw error;
   }}
 
@@ -97,7 +97,7 @@ export async function alter(usr,newusr){
       const body = await res.json()
       return body
     } catch (error){
-      console.log(error)
+      console.error(error)
       throw error;
     }
 }

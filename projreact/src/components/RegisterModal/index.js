@@ -8,11 +8,10 @@ const RegisterModal = () => {
     const [name, setName] = useState("");
     const [usr, setUsr] = useState("");
     const [pw, setPw] = useState("")
-    const [isAdmin, setAdm] = useState("")
+    const [isAdmin, setAdm] = useState("Usuario")
 
     const Register = async (e) => {
         e.preventDefault();
-        if (user.isAdmin!='Admin') setAdm('Usuario')
         const res = await reg(usr, pw, name,isAdmin)
         if(!res.status) alert(res.mensagem)
         else alert('Registrado')

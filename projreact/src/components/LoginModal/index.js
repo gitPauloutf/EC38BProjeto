@@ -13,7 +13,7 @@ const LoginModal = () => {
         e.preventDefault();
         const res = await login(usr, pw);
         console.log(res)
-        if (res) {
+        if (res.status) {
             setUser({
                 usr: res.usr,
                 name: res.name,

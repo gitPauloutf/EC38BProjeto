@@ -33,7 +33,6 @@ module.exports = {
         })
     },
     deleteToken: function (req,res,next){
-        console.log('im tryin')
         res.clearCookie('access_token')
         res.json({status:true})
         next()

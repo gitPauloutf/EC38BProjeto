@@ -22,9 +22,12 @@ const Dashboard = () => {
                 <div className='bg-secondary py-2 text-center' >
                     <h1 className='text-black'>Área do {user.isAdmin}</h1>
                 </div>
+                {(user.isAdmin=='Admin') && 
+                <>
                 <div className='flex-fill'>        
                 <div><Tables /></div>
-                </div> 
+                </div>
+                </>}
             </div>
             <Footer />
         </div>
