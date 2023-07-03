@@ -3,14 +3,18 @@ const router = express.Router();
 var usermodel = require('../model/User')
 const tokens = require('../utils/jwt.js')
 
+router.get('/',tokens.setUser, function(req, res, next){
+    if (!req.usr) console.log("Not verified"); 
+    else res.json({usr: req.usr, name: req.name,isLogged: true,isAdmin: req.isAdmin})
+})
+
 router.post('/reg', async function (req, res, next) {
     console.log(req.body)
     let { usr, pw, name, isAdmin } = req.body
     let [status, err] = await usermodel.reg(usr, name, pw, isAdmin)
     if (status) {
         console.log("Done")
-        res.status(200)
-        res.json({ status: true })
+        res.status(200).json({ status: true })
         return
     } else {
         console.err(err)
@@ -20,19 +24,19 @@ router.post('/reg', async function (req, res, next) {
     }
 })
 
-router.post('/log',  async function (req, res, next) {
-    //let jwtToken
-    const { usr, pw } = req.body
-    let [tmpuser, err] = await usermodel.log(usr, pw)
-    if (!tmpuser) {
-        res.status(403).json({ status: false, mensagem: err })
-    } else {
-        const jwtToken = tokens.generateAccessToken(tmpuser.name, usr, pw, tmpuser.isAdmin)
-        res.set("x-access-token", jwtToken);
-        res.cookie("access_token", jwtToken,{maxAge: 600000}).status(200).json({ usr: usr, name: tmpuser.name , isAdmin: tmpuser.isAdmin, status: true });
-        console.log("Logged")
-    }
-    
+router.post('/log', tokens.setUser, async function (req, res, next) {
+    if (!req.isAdmin){
+        const { usr, pw } = req.body
+        let [tmpuser, err] = await usermodel.log(usr, pw)
+        if (!tmpuser) {
+            res.status(403).json({ status: false, mensagem: err })
+        } else {
+            const jwtToken = tokens.generateAccessToken(tmpuser.name, usr, tmpuser.isAdmin)
+            res.set("access-token", jwtToken);
+            console.log("Logged")
+        }}
+        //return error if not logged
+        res.json({usr: req.usr, name: req.name,isLogged: true,isAdmin: req.isAdmin})
 })
 
 router.post('/logged',tokens.controlaAcesso, async function (req, res, next) {

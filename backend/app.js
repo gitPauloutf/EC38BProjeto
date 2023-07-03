@@ -2,27 +2,25 @@
 const express = require('express')
 const cors = require('cors')
 const dotenv = require('dotenv')
-const cookieParser = require('cookie-parser');
 
 dotenv.config()
 
 var app = express();
 var indexRouter = require('./routes/index');
-var logRouter = require('./routes/logreg');
+//var logRouter = require('./routes/logreg');
 var crud = require('./routes/crud')
 
-app.use(cookieParser())
 app.use(require('./db/mongo'))
-app.use(cors({
+/*app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true,
   preflightContinue: true,
-}))
+}))*/
 
 app.use(express.json());
 
 app.use('/', indexRouter);
-app.use('/', logRouter);
+//app.use('/', logRouter);
 app.use('/',crud);
 
 // error handler
