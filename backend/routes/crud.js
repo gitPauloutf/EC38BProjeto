@@ -4,7 +4,7 @@ var bookmodel = require('../model/Books')
 var authormodel = require('../model/Author')
 const tokens = require('../utils/jwt.js')
 
-async function createAut(name,res){
+async function createAut(name){
     let [status,err] = await authormodel.create(name)
     if (status) {
         console.log("Done")
@@ -14,6 +14,27 @@ async function createAut(name,res){
     console.log(err)
     return null
 }
+
+router.get('/install', async function (req,res,next){
+    console.log("Criando tabelas")
+    //Criar tabelas Autor
+    try {
+    await createAut('Autor 1')
+    await createAut('Autor 2')
+    await createAut('Autor 3')
+    await createAut('Autor 4')
+    await createAut('Autor 5')
+    //Criar tabelas Livro
+    await bookmodel.create('Livro 1',await authormodel.getByName('Autor 1'),'teste',1991)
+    await bookmodel.create('Livro 2',await authormodel.getByName('Autor 2'),'teste',1995)
+    await bookmodel.create('Livro 3',await authormodel.getByName('Autor 3'),'teste',1999)
+    await bookmodel.create('Livro 4',await authormodel.getByName('Autor 2'),'teste',2003)
+    await bookmodel.create('Livro 5',await authormodel.getByName('Autor 1'),'teste',2007)
+    }catch (error){
+        console.error(error)
+        throw error;}
+    res.status(200).send()
+})
 
 
 router.post('/c',tokens.controlaAcesso, async function (req,res,next) {
@@ -25,7 +46,7 @@ router.post('/c',tokens.controlaAcesso, async function (req,res,next) {
         tmp = await authormodel.getByName(autor)
         if (tmp) autor=tmp;
         else {
-            tmp = await createAut(autor, res)
+            tmp = await createAut(autor)
             if (!tmp) {
                 console.log("Falha na criacao do autor")
                 return
@@ -35,7 +56,6 @@ router.post('/c',tokens.controlaAcesso, async function (req,res,next) {
         let [status,err] = await bookmodel.create(name,autor,editora,ano)
         if (status) {
             list = await bookmodel.list()
-            console.log("Done2")
             console.log(list)
             res.status(200).json({books: list, status: true })
         } else {
@@ -47,7 +67,7 @@ router.post('/c',tokens.controlaAcesso, async function (req,res,next) {
     }
     if (req.body.type=='author'){
         let name = req.body.payload
-        tmp = await createAut(name, res)
+        tmp = await createAut(name)
         if (!tmp) {
         res.status(500).json({ status: false, mensagem: err })
         }

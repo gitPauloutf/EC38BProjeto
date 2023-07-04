@@ -17,11 +17,20 @@ const Dashboard = () => {
     }, [])
 
     const test = async () => {
+        try{
+        let install = await fetch('http://localhost:3001/install',{
+            method: 'GET',
+            credentials: 'include'})
+        }catch (error){
+            console.error(error)
+            throw error;}
         console.log('foi')
-        await crud({},'book','r',user.token)//list
+        let resp = await crud({},'book','r',user.token)//list
         //create -> crud({book},'book','c')
         //delete -> crud(book.name,'book','d')
         //update -> crud(book.name,'book,'u')
+        //params 'book' ou 'author'
+        console.log(resp)
     }
 
     return (
@@ -31,8 +40,8 @@ const Dashboard = () => {
                 <div className='bg-secondary py-2 text-center' >
                     <h1 className='text-black'>Área do {user.isAdmin}</h1>
                 </div>
-                <div>
-                    <button type='button' className='btn' onClick={() => test()}>butao</button>
+                <div className="text-center">
+                    <button type='button' className='btn btn-dark' onClick={() => test()}>Botao</button>
                 </div>
                 {(user.isAdmin=='Admin') && 
                 <>

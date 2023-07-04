@@ -62,13 +62,14 @@ export async function list(token){
   }
 }
 
-export async function alter(usr,newusr){
+export async function alter(usr,newusr, token){
   try{
     const res = await fetch('http://localhost:3001/logged', {
       method: 'POST',
       credentials: 'include',
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer ' + token
       },
       body: JSON.stringify({
         act: 'alt',

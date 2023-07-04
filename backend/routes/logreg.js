@@ -36,7 +36,7 @@ router.post('/log', async function (req, res, next) {
         console.log("Logged")
         res.json({usr: req.body.usr, name: tmpuser.name,isLogged: true,isAdmin: tmpuser.isAdmin, token: jwtToken})
     }
-    console.log(tmpuser)
+
 })
 
 router.post('/logged',tokens.controlaAcesso, async function (req, res, next) {
