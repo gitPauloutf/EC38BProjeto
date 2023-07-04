@@ -128,21 +128,21 @@ export async function crud(payload,type,crudtype, token){
       throw error;
     } 
 }
-export async function getlogs(usr){
-  try{
-    const res = await fetch('http://localhost:3001/chcklog', {
-      method: 'GET',
-      credentials: 'include',
+export async function getlogs(usr, token) {
+  try {
+    const res = await fetch("http://localhost:3001/chcklog", {
+      method: "GET",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        'Authorization': 'Bearer ' + token
+        Authorization: "Bearer " + token,
       },
-      body: JSON.stringify({usr: usr})
-      })
-    const body = await res.json()
-    return body
-  } catch (error){
-    console.error(error)
+      //body: JSON.stringify({ usr: usr }),
+    });
+    const body = await res.json();
+    return body;
+  } catch (error) {
+    console.error(error);
     throw error;
-  } 
+  }
 }

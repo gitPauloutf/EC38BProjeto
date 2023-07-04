@@ -67,13 +67,16 @@ router.post('/logged',tokens.controlaAcesso, async function (req, res, next) {
 
 })
 
-router.get('/chcklog',tokens.controlaAcesso,async function (req,res,next){
-    let tmp = await usermodel.getlog(usr)
-    if (tmp){
-        res.json({timeslogged: tmp, status: true})
-    } else {
-        res.json({status: false, err:'Falha na obtencao dos dados'})
-    }
-})
+router.get("/chcklog", tokens.controlaAcesso, async function (req, res, next) {
+  let usr;
+  usr = tokens.getuser(req);
+  console.log(usr);
+  let tmp = await usermodel.getlogs(usr);
+  if (tmp) {
+    res.json({ timeslogged: tmp, status: true });
+  } else {
+    res.json({ status: false, err: "Falha na obtencao dos dados" });
+  }
+});
 
 module.exports = router

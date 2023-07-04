@@ -17,28 +17,30 @@ const Dashboard = () => {
     }, [])
 
     const test = async () => {
-        try{
-        let install = await fetch('http://localhost:3001/install',{
-            method: 'GET',
-            credentials: 'include'})
-        }catch (error){
-            console.error(error)
-            throw error;}
-        console.log('foi')
-        let resp = await crud({},'book','r',user.token)//list
-        //create -> crud({book.ano, book.autor, book.name, book.editora},'book','c')
-        //delete -> crud(book.name,'book','d')
-        //update -> crud(book.name,'book,'u')
-        //params 'book' ou 'author'
-        
-        /*listar quantidade de logins:
-        let resp = await getlogs(user.usr)
-        if (resp.timeslogged){
-            console.log(resp.timeslogged)
-        } else {
-            console.log(resp.err)
-        }*/
-    }
+      try {
+        let install = await fetch("http://localhost:3001/install", {
+          method: "GET",
+          credentials: "include",
+        });
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+      console.log("foi");
+      //let resp = await crud({}, "book", "r", user.token); //list
+      //create -> crud({book.ano, book.autor, book.name, book.editora},'book','c')
+      //delete -> crud(book.name,'book','d')
+      //update -> crud(book.name,'book,'u')
+      //params 'book' ou 'author'
+
+      //listar quantidade de logins:
+      let resp = await getlogs(user.usr, user.token);
+      if (resp.timeslogged) {
+        console.log(resp.timeslogged);
+      } else {
+        console.log(resp.err);
+      }
+      //}
     }
 
     return (
