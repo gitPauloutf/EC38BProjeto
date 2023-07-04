@@ -49,7 +49,7 @@ module.exports = {
             return [0, err]
         }
         tmp = await UserModel.updateOne({ usr: usr }, {$inc:{ timeslogged: 1 }})
-        if (tmp.modifiedCount>0) 
+        if (tmp.modifiedCount>0) {}
         else return [0,'Falha na operacao']
         return [{ usr: obj.usr, name: obj.name, isAdmin: obj.isAdmin }, err]
     },
