@@ -4,7 +4,8 @@ const UserSchema = new mongoose.Schema({
     usr: String,
     name: String,
     pw: String,
-    isAdmin: String
+    isAdmin: String,
+    timeslogged: Number
 })
 const UserModel = mongoose.model("User", UserSchema)
 
@@ -47,7 +48,20 @@ module.exports = {
             err = "Wrong password"
             return [0, err]
         }
+        tmp = await UserModel.updateOne({ usr: usr }, {$inc:{ timeslogged: 1 }})
+        if (tmp.modifiedCount>0) 
+        else return [0,'Falha na operacao']
         return [{ usr: obj.usr, name: obj.name, isAdmin: obj.isAdmin }, err]
+    },
+    getlogs: async function (usr){
+        obj = await getByUsr(usr)
+        if (obj) {
+            res.status(200)
+            return obj.timeslogged
+        } else {
+            res.status(403)
+            return
+        }
     },
     reg: async function (usr, name, pw, isAdmin) {
         obj = await getByUsr(usr)
@@ -59,7 +73,8 @@ module.exports = {
                     usr: usr,
                     name: name,
                     pw: pw,
-                    isAdmin: isAdmin
+                    isAdmin: isAdmin,
+                    timeslogged: 0
                 })
                 if (usr == 'admin') user.isAdmin = 'Admin'
                 await user.save()
