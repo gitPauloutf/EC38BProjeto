@@ -3,8 +3,8 @@ const router = express.Router();
 var usermodel = require('../model/User')
 const tokens = require('../utils/jwt.js')
 
-router.get('/',tokens.setUser, function(req, res, next){
-    if (!req.usr) console.log("Not verified"); 
+router.get('/', function(req, res, next){
+    if (!req.usr) console.log("Not verified 1"); 
     else res.json({usr: req.usr, name: req.name,isLogged: true,isAdmin: req.isAdmin})
 })
 
@@ -24,19 +24,19 @@ router.post('/reg', async function (req, res, next) {
     }
 })
 
-router.post('/log', tokens.setUser, async function (req, res, next) {
-    if (!req.isAdmin){
-        const { usr, pw } = req.body
-        let [tmpuser, err] = await usermodel.log(usr, pw)
-        if (!tmpuser) {
-            res.status(403).json({ status: false, mensagem: err })
-        } else {
-            const jwtToken = tokens.generateAccessToken(tmpuser.name, usr, tmpuser.isAdmin)
-            res.set("access-token", jwtToken);
-            console.log("Logged")
-        }}
-        //return error if not logged
-        res.json({usr: req.usr, name: req.name,isLogged: true,isAdmin: req.isAdmin})
+router.post('/log', async function (req, res, next) {
+    const { usr, pw } = req.body
+    console.log(usr)
+    let [tmpuser, err] = await usermodel.log(usr, pw)
+    if (!tmpuser) {
+        res.status(403).json({ status: false, mensagem: err })
+        return
+    } else {
+        const jwtToken = tokens.generateAccessToken(tmpuser.name, usr, tmpuser.isAdmin)
+        console.log("Logged")
+        res.json({usr: req.body.usr, name: tmpuser.name,isLogged: true,isAdmin: tmpuser.isAdmin, token: jwtToken})
+    }
+    console.log(tmpuser)
 })
 
 router.post('/logged',tokens.controlaAcesso, async function (req, res, next) {
@@ -63,7 +63,7 @@ router.post('/logged',tokens.controlaAcesso, async function (req, res, next) {
         return
     }
     users = await usermodel.list()
-    res.status(200).json({users, status: status, err: err})
+    res.json({users, status: status, err: err})
 
 })
 

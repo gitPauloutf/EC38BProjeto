@@ -16,31 +16,32 @@ module.exports = {
     generateAccessToken,
 
     controlaAcesso: function (req, res, next) {
-        let token = req.headers.access_token
+        if(res){
+        //token = req.body.token
+        let bearer = req.headers['authorization'] || ''
+        let aux = bearer.split(' ')
+        let token = ''
+        console.log(token)
+        if (aux[0] == 'Bearer') {
+            token = aux[1]
+        }
         if(!token) return res.status(401).json({ status: false, mensagem: "No tokens?" })
 
 
         jwt.verify(token, process.env.TOKEN_SECRET, (err, payload) => {
             if (err) {
+                console.log(err)
                 return res.status(403).json({ status: false, mensagem: "Acesso negado" })
             }
-            req.name = payload.name
-            req.usr = payload.usr
-            req.isAdmin = payload.isAdmin
-            next()
+            if (req.body.name){
+                req.body.name = payload.name
+                req.body.usr = payload.usr
+                req.body.isAdmin = payload.isAdmin
+                next()
+            }
+            
         })
-    },
-    setUser: function (req, res, next) {
-        let token = req.headers.access_token
-        if (token) {
-        jwt.verify(token, process.env.TOKEN_SECRET, (err, payload) => {
-            if (err) {
-                return res.status(403).json({ status: false, mensagem: "Acesso negado" })
-            }
-            req.name = payload.name
-            req.usr = payload.usr
-            req.isAdmin = payload.isAdmin
-        })}
+        } else console.log('falhou')
         next()
     }
 }

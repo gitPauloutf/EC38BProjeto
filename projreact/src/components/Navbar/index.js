@@ -11,12 +11,13 @@ const Navbar = () => {
 
     const Logout = async (e) => {
         e.preventDefault();
-        const res = await fetch('http://localhost:3001/out',{credentials: 'include'})
+        /*const res = await fetch('http://localhost:3001/out',{credentials: 'include'})
         var resj = await res.json()
         if (resj.status==true) {
             navigate('/')
-            console.log(resj.status)
-            setUser('')}
+            console.log(resj.status)*/
+            setUser('')//}
+            navigate('/')
     }
 
     return (

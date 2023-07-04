@@ -6,12 +6,14 @@ import Context from "./context";
 import { useState } from "react";
 
 function App() {
+  
   const [user, setUser] = useState({
     usr: "",
     name: "",
     isAdmin: "",
-    isLogged: false
+    isLogged: false,
   })
+  
   return (
     <BrowserRouter>
       <Context.Provider value={[user, setUser]}>

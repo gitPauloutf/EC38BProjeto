@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import {list,del} from "../../service/Api"
 import EditModal from "../EditModal"
 import { useNavigate } from "react-router-dom";
+import Context from "../../context";
 
 const Tables = () => {
+    const [user, setUser] = useContext(Context);
     const [usrold, setUsrOld] = useState('')
     const navigate = useNavigate()
     const delUser = async (usr) => {
-      const res = await del(usr.usr)
-      navigate(0)
+      const res = await del(usr.usr,user.token)
+      navigate('/')
   }
   
     const getlist = async () => {
-      const res = await list('list',null)
-
+      const res = await list(user.token)
       setTlist(res.users)
     }
 

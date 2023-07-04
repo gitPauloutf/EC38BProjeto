@@ -24,7 +24,7 @@ const EditModal = ({usrold}) => {
         e.preventDefault();
 
         const res = await alter(usrold.usr, {usr: usr, name: name, isAdmin: adm})
-        if(!res.status) alert(res.mensagem)
+        if(!res.body.status) alert(res.mensagem)
         else alert('Usuario editado')
         navigate(0)
     }

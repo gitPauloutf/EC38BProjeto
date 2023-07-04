@@ -12,7 +12,7 @@ export async function login(usr, pw) {
       }),
     })
     const body = await res.json()
-    return await body
+    return body
   } catch (error) {
     console.error(error)
     return false
@@ -23,6 +23,7 @@ export async function login(usr, pw) {
 export async function reg(usr, pw, name, isAdmin) {
   return await fetch('http://localhost:3001/reg', {
     method: 'POST',
+    credentials: 'include',
     headers: {
       "Content-Type": "application/json"
     },
@@ -40,13 +41,14 @@ export async function reg(usr, pw, name, isAdmin) {
   })
 }
 
-export async function list(){
+export async function list(token){
   try{
     const res = await fetch('http://localhost:3001/logged', {
       method: 'POST',
       credentials: 'include',
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer ' + token
       },
       body: JSON.stringify({
         act: 'list',
@@ -82,13 +84,14 @@ export async function alter(usr,newusr){
     throw error;
   }}
 
-  export async function del(usr){
+  export async function del(usr,token){
     try{
       const res = await fetch('http://localhost:3001/logged', {
         method: 'POST',
         credentials: 'include',
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ' + token
         },
         body: JSON.stringify({
           act: 'del',
@@ -99,5 +102,28 @@ export async function alter(usr,newusr){
     } catch (error){
       console.error(error)
       throw error;
-    }
+    } 
+}
+
+export async function crud(payload,type,crudtype, token){
+    var route = "http://localhost:3001/" + crudtype
+    console.log(route)
+    try{
+      const res = await fetch(route, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+          type: type,
+          payload: payload})
+        })
+      const body = await res.json()
+      return body
+    } catch (error){
+      console.error(error)
+      throw error;
+    } 
 }

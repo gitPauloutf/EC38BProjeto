@@ -12,17 +12,17 @@ const LoginModal = () => {
     const Login = async (e) => {
         e.preventDefault();
         const res = await login(usr, pw);
-        console.log(res)
-        if (res.status) {
+        if (res.token) {
             setUser({
                 usr: res.usr,
                 name: res.name,
                 isAdmin: res.isAdmin,
                 isLogged: true,
+                token: res.token
             })
             navigate("/dashboard")
-        }
-        else alert("Falha ao realizar o login")
+        }else alert("Falha ao realizar o login")
+        
         
     }
     return (

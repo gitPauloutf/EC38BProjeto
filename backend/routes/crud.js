@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 var bookmodel = require('../model/Books')
 var authormodel = require('../model/Author')
+const tokens = require('../utils/jwt.js')
 
 async function createAut(name,res){
     let [status,err] = await authormodel.create(name)
@@ -15,7 +16,7 @@ async function createAut(name,res){
 }
 
 
-router.post('/c', async function (req,res,next) {
+router.post('/c',tokens.controlaAcesso, async function (req,res,next) {
     let list = null
     let tmp = null
     if (req.body.type=='book'){
@@ -58,7 +59,7 @@ router.post('/c', async function (req,res,next) {
     res.status(500).json({ status: false, mensagem: 'Falha de comunicacao' })
 })
 
-router.post('/r', async function (req,res,next) {
+router.post('/r',tokens.controlaAcesso, async function (req,res,next) {
     let list = null
     if (req.body.type=='book'){
         list = await bookmodel.list()
@@ -73,10 +74,10 @@ router.post('/r', async function (req,res,next) {
     res.status(500).json({ status: false, mensagem: 'Falha de comunicacao' })
 })
 
-router.post('/u', async function (req,res,next) {
-    let obj = req.body.payload
+router.post('/u',tokens.controlaAcesso, async function (req,res,next) {
+    let obj = req.body.payload.nome
     let list = null
-    let old = req.body.old   
+    let old = req.body.payload.old   
     if (req.body.type=='book'){
         let [status,err] = await bookmodel.update(old, obj)
         if (status) {
@@ -108,7 +109,7 @@ router.post('/u', async function (req,res,next) {
     res.status(500).json({ status: false, mensagem: 'Falha de comunicacao' })
 })
 
-router.post('/d', async function (req,res,next) {
+router.post('/d',tokens.controlaAcesso, async function (req,res,next) {
     let id = req.body.payload
     let list
     if (req.body.type=='book'){

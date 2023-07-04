@@ -15,7 +15,7 @@ const RegisterModal = () => {
         const res = await reg(usr, pw, name,isAdmin)
         if(!res.status) alert(res.mensagem)
         else alert('Registrado')
-        navigate(0);
+        navigate('/');
     }
 
     return (

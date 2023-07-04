@@ -25,7 +25,7 @@ async function list() {
 
 async function del(usr) {
     tmp = await UserModel.deleteOne({ usr: usr })
-    if (tmp.ok>0) return [1,0]
+    if (tmp.acknowledged>0) return [1,0]
     else return [0,'Falha na operacao']
 }
 async function alter(usr, newusr) {
