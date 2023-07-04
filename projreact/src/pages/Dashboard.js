@@ -4,7 +4,7 @@ import Tables from "../components/Table"
 import { useContext, useEffect } from "react";
 import Context from "../context";
 import { useNavigate } from "react-router-dom";
-import {crud} from '../service/Api'
+import {crud,getlogs} from '../service/Api'
 
 const Dashboard = () => {
     const [user, setUser] = useContext(Context);
@@ -26,11 +26,19 @@ const Dashboard = () => {
             throw error;}
         console.log('foi')
         let resp = await crud({},'book','r',user.token)//list
-        //create -> crud({book},'book','c')
+        //create -> crud({book.ano, book.autor, book.name, book.editora},'book','c')
         //delete -> crud(book.name,'book','d')
         //update -> crud(book.name,'book,'u')
         //params 'book' ou 'author'
-        console.log(resp)
+        
+        /*listar quantidade de logins:
+        let resp = await getlogs(user.usr)
+        if (resp.timeslogged){
+            console.log(resp.timeslogged)
+        } else {
+            console.log(resp.err)
+        }*/
+    }
     }
 
     return (
